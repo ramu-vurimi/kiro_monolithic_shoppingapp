@@ -37,17 +37,20 @@ const AUTH_ROUTES = ['/login', '/register', '/forgot-password', '/reset-password
       </span>
       <span class="spacer"></span>
 
-      <a mat-button routerLink="/products" routerLinkActive="nav-active">
-        <mat-icon>inventory_2</mat-icon>
-        Products
+      <!-- Normal user nav -->
+      <a mat-button routerLink="/shop" routerLinkActive="nav-active" *appHasRole="'USER'">
+        <mat-icon>storefront</mat-icon>
+        Shop
       </a>
-      <a mat-button routerLink="/sell" routerLinkActive="nav-active">
-        <mat-icon>point_of_sale</mat-icon>
-        Sell
-      </a>
-      <a mat-button routerLink="/my-orders" routerLinkActive="nav-active" *appHasRole="['USER', 'ADMIN']">
+      <a mat-button routerLink="/my-orders" routerLinkActive="nav-active" *appHasRole="'USER'">
         <mat-icon>receipt_long</mat-icon>
         My Orders
+      </a>
+
+      <!-- Admin-only nav -->
+      <a mat-button routerLink="/products" routerLinkActive="nav-active" *appHasRole="'ADMIN'">
+        <mat-icon>inventory_2</mat-icon>
+        Products
       </a>
       <a mat-button routerLink="/purchase-history" routerLinkActive="nav-active" *appHasRole="'ADMIN'">
         <mat-icon>local_shipping</mat-icon>

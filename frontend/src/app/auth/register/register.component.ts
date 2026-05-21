@@ -276,8 +276,13 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/products']);
+      this.router.navigate([this.getHomeRoute()]);
     }
+  }
+
+  /** Returns the landing route based on the current user's role. */
+  private getHomeRoute(): string {
+    return this.authService.hasRole('ADMIN') ? '/products' : '/shop';
   }
 
   onSubmit(): void {
@@ -293,7 +298,7 @@ export class RegisterComponent implements OnInit {
     this.authService.register({ username, email, password }).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/products']);
+        this.router.navigate([this.getHomeRoute()]);
       },
       error: (err: HttpErrorResponse) => {
         this.loading = false;
