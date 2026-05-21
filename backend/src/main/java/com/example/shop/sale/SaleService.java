@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -162,12 +163,22 @@ public class SaleService {
     }
 
     /**
-     * Map Sale entity to SaleResponse DTO
+     * Map Sale entity to SaleResponse DTO.
+     * Batch-fetches product names for all items in one query.
      */
     private SaleResponse mapToSaleResponse(Sale sale) {
+        // Collect all product IDs in this sale and fetch their names in one query
+        List<Long> productIds = sale.getItems().stream()
+                .map(SaleItem::getProductId)
+                .collect(Collectors.toList());
+
+        Map<Long, String> productNames = productRepository.findAllById(productIds).stream()
+                .collect(Collectors.toMap(Product::getId, Product::getName));
+
         List<SaleResponse.SaleItemResponse> itemResponses = sale.getItems().stream()
                 .map(item -> SaleResponse.SaleItemResponse.builder()
                         .productId(item.getProductId())
+                        .productName(productNames.getOrDefault(item.getProductId(), "Unknown Product"))
                         .quantity(item.getQuantity())
                         .unitPrice(item.getUnitPrice())
                         .lineTotal(item.getLineTotal())

@@ -326,6 +326,6 @@ export class ChangePasswordComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/products']);
+    this.router.navigate([this.authService.hasRole('ADMIN') ? '/products' : '/shop']);
   }
 }

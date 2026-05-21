@@ -229,10 +229,15 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // If already authenticated, redirect to /products immediately
+    // If already authenticated, redirect based on role
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/products']);
+      this.router.navigate([this.getHomeRoute()]);
     }
+  }
+
+  /** Returns the landing route based on the current user's role. */
+  private getHomeRoute(): string {
+    return this.authService.hasRole('ADMIN') ? '/products' : '/shop';
   }
 
   onSubmit(): void {
@@ -248,7 +253,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/products']);
+        this.router.navigate([this.getHomeRoute()]);
       },
       error: (err: HttpErrorResponse) => {
         this.loading = false;

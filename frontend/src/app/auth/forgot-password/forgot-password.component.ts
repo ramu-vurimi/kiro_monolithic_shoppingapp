@@ -225,7 +225,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/products']);
+      this.router.navigate([this.authService.hasRole('ADMIN') ? '/products' : '/shop']);
     }
   }
 

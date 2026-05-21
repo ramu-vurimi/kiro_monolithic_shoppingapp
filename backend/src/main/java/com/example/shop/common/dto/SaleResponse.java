@@ -25,6 +25,7 @@ public class SaleResponse {
     @Builder
     public static class SaleItemResponse {
         private Long productId;
+        private String productName;
         private Integer quantity;
         private BigDecimal unitPrice;
         private BigDecimal lineTotal;

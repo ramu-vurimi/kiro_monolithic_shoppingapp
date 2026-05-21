@@ -62,6 +62,7 @@ export interface SaleResponse {
 
 export interface SaleItemResponse {
   productId: number;
+  productName: string;
   quantity: number;
   unitPrice: number;
   lineTotal: number;
